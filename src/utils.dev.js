@@ -7,6 +7,7 @@ const getProxyOrType = type => {
   return proxy ? proxy.get() : type;
 };
 
+// 判断两个component是否相同
 export const areComponentsEqual = (a, b) => getProxyOrType(a) === getProxyOrType(b);
 
 export const compareOrSwap = (oldType, newType) => hotComponentCompare(oldType, newType);

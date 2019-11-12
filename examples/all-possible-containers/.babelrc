@@ -22,7 +22,7 @@
     },
     "development": {
       "plugins": [
-        "react-hot-loader/babel"
+        "../../babel"
       ]
     },
     "production": {
