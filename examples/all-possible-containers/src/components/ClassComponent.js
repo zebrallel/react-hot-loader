@@ -15,13 +15,6 @@ class ClassComponent extends React.Component {
     // this is class component constructor 1
     console.log('this is class component constructor 3');
   }
-  componentWillReceiveProps(prev, next) {
-    console.log('will receive props');
-    console.log(prev, next);
-  }
-  componentWillUpdate() {
-    console.log('will update');
-  }
   render() {
     return (
       <div>
