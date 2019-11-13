@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 
-const ErrorBoundary = ({ error, errorInfo }: { error: any, errorInfo: Object }) => (
+const ErrorBoundary = ({ error, errorInfo }) => (
   <div
     style={{
       margin: '20px auto',
