@@ -115,6 +115,13 @@ const makeHotExport = (sourceModule, moduleId) => {
   }
 };
 
+/**
+ * children: ['./node_modules/webpack/buildin/harmony-module.js', '../../root.js']
+ * exports: {__esModule: true}
+ * i: './src/components/App.js'
+ * l: false
+ * parents: ['./src/index.js']
+ */
 const hot = sourceModule => {
   if (!sourceModule) {
     // this is fatal
@@ -125,6 +132,8 @@ const hot = sourceModule => {
     console.error('`module` provided', sourceModule);
     throw new Error('React-hot-loader: `hot` could not find the `name` of the the `module` you have provided');
   }
+
+  // module: { instances: [], updateTimeout: 0 }
   const module = hotModule(moduleId);
   makeHotExport(sourceModule, moduleId);
 
