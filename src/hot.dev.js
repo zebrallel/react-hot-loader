@@ -135,6 +135,7 @@ const hot = sourceModule => {
 
   // module: { instances: [], updateTimeout: 0 }
   const module = hotModule(moduleId);
+
   makeHotExport(sourceModule, moduleId);
 
   clearExceptions();
