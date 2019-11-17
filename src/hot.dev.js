@@ -135,9 +135,12 @@ const hot = sourceModule => {
 
   // module: { instances: [], updateTimeout: 0 }
   const module = hotModule(moduleId);
+
+  // 为sourceModule添加module.hot监听， 当我们的classComponent发生变化后，sourceModule也就是App.js
   makeHotExport(sourceModule, moduleId);
 
   clearExceptions();
+
   const failbackTimer = chargeFailbackTimer(moduleId);
   let firstHotRegistered = false;
 
@@ -149,13 +152,17 @@ const hot = sourceModule => {
     // only one hot per file would use this registration
     if (!firstHotRegistered) {
       firstHotRegistered = true;
+
+      // 这里就是核心操作，使用proxy将传递进来的component包裹起来
       reactHotLoader.register(WrappedComponent, getComponentDisplayName(WrappedComponent), `RHL${moduleId}`);
     }
 
+    // 创建一个hoc，非react static的变量提升，设置targetComponent的displayName
     return createHoc(
       WrappedComponent,
       class ExportedComponent extends Component {
         componentDidMount() {
+          // 这里的module其实就是App.js，appjs的module.instance里面，持有当前ExportedComponent的实例
           module.instances.push(this);
         }
 
@@ -172,6 +179,7 @@ const hot = sourceModule => {
           module.instances = module.instances.filter(a => a !== this);
         }
 
+        // 这里使用AppContainer包裹，可以捕获到所有的error，并且指定自定义的ErrorBoundary
         render() {
           return (
             <AppContainer {...props}>
