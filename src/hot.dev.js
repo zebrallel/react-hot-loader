@@ -153,7 +153,7 @@ const hot = sourceModule => {
     if (!firstHotRegistered) {
       firstHotRegistered = true;
 
-      // 这里就是核心操作，使用proxy将传递进来的component包裹起来
+      // 这里就是核心操作，为我们传入的组件注册proxy
       reactHotLoader.register(WrappedComponent, getComponentDisplayName(WrappedComponent), `RHL${moduleId}`);
     }
 
