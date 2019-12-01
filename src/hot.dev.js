@@ -49,6 +49,7 @@ const makeHotExport = (sourceModule, moduleId) => {
       console.error(possibleError);
       return;
     }
+    // module: { instances: [Array[1]], updateTimeout: 0 }, 此时instances就会包含一个ExportedComponent
     const module = hotModule(moduleId);
 
     const deepUpdate = () => {
@@ -56,6 +57,7 @@ const makeHotExport = (sourceModule, moduleId) => {
       runInRenderQueue(() => {
         enterHotUpdate();
         const gen = getHotGeneration();
+        // 这里调用组件的forceUpdate方法
         module.instances.forEach(inst => inst.forceUpdate());
 
         if (configuration.trackTailUpdates) {
@@ -97,12 +99,14 @@ const makeHotExport = (sourceModule, moduleId) => {
   if (sourceModule.hot) {
     // Mark as self-accepted for Webpack (callback is an Error Handler)
     // Update instances for Parcel (callback is an Accept Handler)
+    // 这里只有当异常发生时才会被调用
     sourceModule.hot.accept(updateInstances);
 
     // Webpack way
     if (sourceModule.hot.addStatusHandler) {
       if (sourceModule.hot.status() === 'idle') {
         sourceModule.hot.addStatusHandler(status => {
+          // 这里status的状态会有：check => prepare => ready => dispose => apply => idle
           if (status === 'apply') {
             clearExceptions();
             updateInstances();
@@ -141,12 +145,15 @@ const hot = sourceModule => {
 
   clearExceptions();
 
+  // 注册一个更新失败的函数
   const failbackTimer = chargeFailbackTimer(moduleId);
   let firstHotRegistered = false;
 
   // TODO: Ensure that all exports from this file are react components.
 
+  // 本例中这个WrappedComponent就是我们在 ExportedApp = hot(App) 中传入的 App 组件
   return (WrappedComponent, props) => {
+    // 这里把失败回调注销
     clearFailbackTimer(failbackTimer);
     // register proxy for wrapped component
     // only one hot per file would use this registration
@@ -163,6 +170,7 @@ const hot = sourceModule => {
       class ExportedComponent extends Component {
         componentDidMount() {
           // 这里的module其实就是App.js，appjs的module.instance里面，持有当前ExportedComponent的实例
+          // 所以在页面挂载以后，当前高阶组件实例会被保存
           module.instances.push(this);
         }
 

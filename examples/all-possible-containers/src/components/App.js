@@ -51,7 +51,7 @@ class App extends React.Component {
           </fieldset>
           {/* <HookedComponent /> */}
           <ClassComponent />
-          <FunctionComponent />
+          {/* <FunctionComponent />
           <PureClassComponent />
           <ConsumerClassComponent />
           <ConsumerFunctionComponent />
@@ -67,7 +67,7 @@ class App extends React.Component {
               <Context.Consumer>{value => (value === '42' ? <A /> : <B />)}</Context.Consumer>
             </Context.Provider>
             <PureClassComponent />
-          </div>
+          </div> */}
         </React.Fragment>
       </div>
     );

@@ -28,7 +28,7 @@ class ClassComponent extends React.Component {
               });
             }}
           >
-            click me
+            click me 10
           </button>
         </fieldset>
       </div>
